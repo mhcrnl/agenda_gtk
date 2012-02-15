@@ -1,0 +1,8 @@
+
+Agenda Gtk
+
+Tentativa de criação de uma agenda telefonica utilizando a biblioteca grafica gtk, tendo como objetivo o aprendizado e pratica da linguagem c utilizando a biblioteca gtk.
+
+Instruções para compilação:
+
+$ gcc -o source source.c `pkg-config --cflags --libs gtk+-2.0`
