@@ -6,6 +6,31 @@ void sair(GtkWidget *w, gpointer *p){
 	gtk_exit(0);
 }
 
+struct teste{
+	GtkWidget *lista;
+	GtkWidget *nome;
+	GtkWidget *fone;
+};
+
+void adiciona(GtkWidget *w, gpointer *p){
+
+	struct teste *novoContato;
+
+	GtkWidget *entry;
+
+	novoContato = (struct teste*) malloc(sizeof(struct teste*));
+
+	novoContato = (struct teste*) p;
+
+	gchar *dados[2];
+
+	dados[0] = (char *) gtk_entry_get_text( GTK_ENTRY(novoContato->nome));
+	dados[1] = (char *) gtk_entry_get_text( GTK_ENTRY(novoContato->fone));
+
+	gtk_clist_append(GTK_CLIST(novoContato->lista),dados);
+
+	
+}
 
 int main(int argc, char **argv){
 	
@@ -26,8 +51,12 @@ int main(int argc, char **argv){
 
 	
 	//titulos da CList
-	gchar *titulos[2]={"Coluna 1","Coluna 2"};
+	gchar *titulos[2]={"Nome","Telefone"};
 	
+
+	struct teste *novoContato;
+
+	novoContato = (struct teste*) malloc(sizeof(struct teste*));
 
 
 	gtk_init(&argc,&argv);
@@ -44,6 +73,7 @@ int main(int argc, char **argv){
 	b_ok = gtk_button_new_with_label("Confirmar");
 	b_cancel = gtk_button_new_with_label("Cancelar");
 
+
 	
 	l_nome = gtk_label_new("Nome:");
 	l_telefone = gtk_label_new("telefone:");
@@ -55,6 +85,11 @@ int main(int argc, char **argv){
 	gtk_clist_set_column_width(GTK_CLIST(clist),0,250);
 	gtk_clist_set_column_width(GTK_CLIST(clist),1,250);
 
+	novoContato->lista = clist;
+	novoContato->nome = t_nome;
+	novoContato->fone = t_telefone;
+
+	gtk_signal_connect(GTK_OBJECT(b_add),"clicked",GTK_SIGNAL_FUNC(adiciona),novoContato);
 
 	/**cria uma caixa horizontal.
 		 true = determina que todas as subdivisões tem o mesmo tamanho
