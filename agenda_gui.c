@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <stdlib.h> //para uso da função malloc.
+#include "util.h"
 
 void sair(GtkWidget *w, gpointer *p){
 	g_print("Saindo...");
@@ -49,9 +50,12 @@ int main(int argc, char **argv){
 
 	gtk_init(&argc,&argv);
 
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_widget_set_usize(GTK_WIDGET(window),500,500);
-	gtk_window_set_title(GTK_WINDOW(window),"Agenda Gtk");
+	//window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	//gtk_widget_set_usize(GTK_WIDGET(window),500,500);
+	//gtk_window_set_title(GTK_WINDOW(window),"Agenda Gtk");
+
+	window = cria_janela(500,500,"Agenda Gtk");
+
 	gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(sair),NULL);
 	b_add = gtk_button_new_with_label("Adiciona");
 	b_remove = gtk_button_new_with_label("Remove");
