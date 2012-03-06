@@ -2,6 +2,7 @@
 #include <stdlib.h> //para uso da função malloc.
 #include "util.h"
 
+
 void sair(GtkWidget *w, gpointer *p){
 	g_print("Saindo...");
 	gtk_exit(0);
@@ -12,6 +13,10 @@ struct teste{
 	GtkWidget *nome;
 	GtkWidget *fone;
 };
+
+void remove_dados(GtkWidget *w, gpointer *p){
+	gtk_clist_remove(GTK_CLIST(p),0);	
+}
 
 void adiciona(GtkWidget *w, gpointer *p){
 	struct teste *novoContato;
@@ -47,12 +52,7 @@ int main(int argc, char **argv){
 	struct teste *novoContato;
 	novoContato = (struct teste*) malloc(sizeof(struct teste*));
 
-
 	gtk_init(&argc,&argv);
-
-	//window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	//gtk_widget_set_usize(GTK_WIDGET(window),500,500);
-	//gtk_window_set_title(GTK_WINDOW(window),"Agenda Gtk");
 
 	window = cria_janela(500,500,"Agenda Gtk");
 
@@ -65,13 +65,12 @@ int main(int argc, char **argv){
 	l_telefone = gtk_label_new("telefone:");
 	t_nome = gtk_entry_new();
 	t_telefone = gtk_entry_new();
-	clist = gtk_clist_new_with_titles(2,titulos);
-	gtk_clist_set_column_width(GTK_CLIST(clist),0,250);
-	gtk_clist_set_column_width(GTK_CLIST(clist),1,250);
+
+	clist = cria_clist(2,500,titulos);
+
 	hbox_add_remove = gtk_hbox_new(TRUE,5);
 	hbox_ok_cancel = gtk_hbox_new(TRUE,5);
 	table = gtk_table_new(5,3,FALSE);
-
 
 	novoContato->lista = clist;
 	novoContato->nome = t_nome;
@@ -79,6 +78,7 @@ int main(int argc, char **argv){
 
 	gtk_signal_connect(GTK_OBJECT(b_cancel),"clicked",GTK_SIGNAL_FUNC(sair),NULL);
 	gtk_signal_connect(GTK_OBJECT(b_add),"clicked",GTK_SIGNAL_FUNC(adiciona),novoContato);
+	gtk_signal_connect(GTK_OBJECT(b_remove),"clicked",GTK_SIGNAL_FUNC(remove_dados),clist);
 
 	gtk_box_pack_start(GTK_BOX(hbox_add_remove),b_add,FALSE,TRUE,5);
 	gtk_box_pack_start(GTK_BOX(hbox_add_remove),b_remove,FALSE,TRUE,5);
