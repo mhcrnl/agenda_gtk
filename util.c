@@ -25,7 +25,7 @@ GtkWidget *cria_clist(int num_cols, int largura, char **titulo){
 	return clist;
 }
 
-void grava_dados(int linhas, char *contato[linhas][2]){
+/*void grava_dados(int linhas, char *contato[linhas][2]){
 	int i;
 	FILE *arquivo;
 	arquivo = fopen("bd.txt","w");
@@ -40,4 +40,4 @@ void grava_dados(int linhas, char *contato[linhas][2]){
 		fputs(contato[i][0],arquivo);
 		i++;
 	}
-}
+}*/
