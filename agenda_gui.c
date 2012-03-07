@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <stdlib.h> //para uso da função malloc.
 #include "util.h"
+#include <string.h>
 
 #define	LINHAS	10
 #define COLUNAS	2
@@ -22,6 +23,7 @@ struct teste{
 void get_dados(GtkWidget *w, gpointer *p){
 	gchar *text;
 	char *contatos[LINHAS][COLUNAS];
+	char *aux;
 	int i = 0;
 
 	while(i < LINHAS){
@@ -37,15 +39,26 @@ void get_dados(GtkWidget *w, gpointer *p){
 		i++;
 	}
 
-	i =0;
-	while(i < LINHAS){
-		g_print("\n%.20s \t %20s ",contatos[i][0],contatos[i][1]);
-		if (contatos[i][0] == "" && contatos[i][1] == "")
-			break;
-		i++;
+	FILE *file;
+	file = fopen("file.txt","w");
+	if(file == NULL){
+		g_printf("\nFalha ao abrir o arquivo\n");
+		exit(1);
+	}
+	else{
+		i =0;
+		while(i < LINHAS){
+			fputs(contatos[i][0],file);
+			fputs(":",file);
+			fputs(contatos[i][1],file);
+			fputs("\n",file);
+			++i;
+			if(contatos[i][0]=="")
+				break;
+		}	
 	}
 
-	
+	fclose(file);
 }
 
 
