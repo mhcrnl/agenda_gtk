@@ -2,6 +2,8 @@
 #include <stdlib.h> //para uso da função malloc.
 #include "util.h"
 
+#define	LINHAS	10
+#define COLUNAS	2
 
 static gint linha;
 
@@ -16,10 +18,44 @@ struct teste{
 	GtkWidget *fone;
 };
 
+
+void get_dados(GtkWidget *w, gpointer *p){
+	gchar *text;
+	char *contatos[LINHAS][COLUNAS];
+	int i = 0;
+
+	while(i < LINHAS){
+		text = "";
+		gtk_clist_get_text(GTK_CLIST(p),i,0,&text);
+		contatos[i][0] = (char *) text;
+		gtk_clist_get_text(GTK_CLIST(p),i,1,&text);
+		contatos[i][1] = (char *) text;
+		
+		if (contatos[i][0] == "" && contatos[i][1]== "" )
+			break;
+
+		i++;
+	}
+
+	i =0;
+	while(i < LINHAS){
+		g_print("\n%.20s \t %20s ",contatos[i][0],contatos[i][1]);
+		if (contatos[i][0] == "" && contatos[i][1] == "")
+			break;
+		i++;
+	}
+
+	
+}
+
+
+/* remove a linha selecionada no clist */
 void remove_dados(GtkWidget *w, gpointer *p){
 	gtk_clist_remove(GTK_CLIST(p),linha);	
 }
 
+/* retorna as a linha e coluna do item selecionado na lista 
+ * para ser utilizado na função que remove registro.	*/
 void selection_made(GtkWidget				*clist,
 										gint						row,
 										gint						column,
@@ -91,6 +127,7 @@ int main(int argc, char **argv){
 	gtk_signal_connect(GTK_OBJECT(b_cancel),"clicked",GTK_SIGNAL_FUNC(sair),NULL);
 	gtk_signal_connect(GTK_OBJECT(b_add),"clicked",GTK_SIGNAL_FUNC(adiciona),novoContato);
 	gtk_signal_connect(GTK_OBJECT(b_remove),"clicked",GTK_SIGNAL_FUNC(remove_dados),clist);
+	gtk_signal_connect(GTK_OBJECT(b_ok),"clicked",GTK_SIGNAL_FUNC(get_dados),clist);
 
 	gtk_box_pack_start(GTK_BOX(hbox_add_remove),b_add,FALSE,TRUE,5);
 	gtk_box_pack_start(GTK_BOX(hbox_add_remove),b_remove,FALSE,TRUE,5);
