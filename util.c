@@ -25,5 +25,19 @@ GtkWidget *cria_clist(int num_cols, int largura, char **titulo){
 	return clist;
 }
 
+void grava_dados(int linhas, char *contato[linhas][2]){
+	int i;
+	FILE *arquivo;
+	arquivo = fopen("bd.txt","w");
+	if ( arquivo == NULL){
+		printf("\nErro ao abrir arquivo.\n");
+		exit(1);
+	}
+	
+	i=0;
 
-
+	while(i<linhas){
+		fputs(contato[i][0],arquivo);
+		i++;
+	}
+}
