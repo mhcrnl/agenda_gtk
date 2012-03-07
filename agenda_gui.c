@@ -3,6 +3,8 @@
 #include "util.h"
 
 
+static gint linha;
+
 void sair(GtkWidget *w, gpointer *p){
 	g_print("Saindo...");
 	gtk_exit(0);
@@ -15,7 +17,15 @@ struct teste{
 };
 
 void remove_dados(GtkWidget *w, gpointer *p){
-	gtk_clist_remove(GTK_CLIST(p),0);	
+	gtk_clist_remove(GTK_CLIST(p),linha);	
+}
+
+void selection_made(GtkWidget				*clist,
+										gint						row,
+										gint						column,
+										GdkEventButton	*event,
+										gpointer				data){
+	linha = row;
 }
 
 void adiciona(GtkWidget *w, gpointer *p){
@@ -75,6 +85,8 @@ int main(int argc, char **argv){
 	novoContato->lista = clist;
 	novoContato->nome = t_nome;
 	novoContato->fone = t_telefone;
+
+	gtk_signal_connect(GTK_OBJECT(clist),"select_row",GTK_SIGNAL_FUNC(selection_made),NULL);
 
 	gtk_signal_connect(GTK_OBJECT(b_cancel),"clicked",GTK_SIGNAL_FUNC(sair),NULL);
 	gtk_signal_connect(GTK_OBJECT(b_add),"clicked",GTK_SIGNAL_FUNC(adiciona),novoContato);
