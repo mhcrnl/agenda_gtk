@@ -105,6 +105,9 @@ void adiciona(GtkWidget *w, gpointer *p){
 	dados[1] = (char *) gtk_entry_get_text( GTK_ENTRY(novoContato->fone));
 
 	gtk_clist_append(GTK_CLIST(novoContato->lista),dados);
+
+	gtk_entry_set_text(GTK_ENTRY(novoContato->nome),"");
+	gtk_entry_set_text(GTK_ENTRY(novoContato->fone),"");
 }
 
 int main(int argc, char **argv){
