@@ -20,6 +20,26 @@ struct teste{
 };
 
 
+void atualiza_lista(GtkWidget *w, gpointer *p){
+	char nome[51];
+	char fone[30];
+	gchar *dados[2];
+	FILE *file;
+	if((file=fopen("file.txt","r")) == NULL){
+		g_printf("Falha ao abrir arquivos.\n");
+		exit(1);
+	}
+
+	while(fscanf(file,"%s %s",nome,fone) != EOF){
+		dados[0]=nome;
+		dados[1]=fone;
+		gtk_clist_append(GTK_CLIST(p),dados);
+	}
+
+}
+
+
+/* grava os contados da clist em um arquivo em disco */
 void get_dados(GtkWidget *w, gpointer *p){
 	gchar *text;
 	char *contatos[LINHAS][COLUNAS];
@@ -48,9 +68,7 @@ void get_dados(GtkWidget *w, gpointer *p){
 	else{
 		i =0;
 		while(i < LINHAS){
-			fputs(contatos[i][0],file);
-			fputs(":",file);
-			fputs(contatos[i][1],file);
+			fprintf(file,"%s %s",contatos[i][0],contatos[i][1]);
 			fputs("\n",file);
 			++i;
 			if(contatos[i][0]=="")
@@ -116,6 +134,7 @@ int main(int argc, char **argv){
 	window = cria_janela(500,500,"Agenda Gtk");
 
 	gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(sair),NULL);
+
 	b_add = gtk_button_new_with_label("Adiciona");
 	b_remove = gtk_button_new_with_label("Remove");
 	b_ok = gtk_button_new_with_label("Confirmar");
@@ -135,6 +154,7 @@ int main(int argc, char **argv){
 	novoContato->nome = t_nome;
 	novoContato->fone = t_telefone;
 
+	gtk_signal_connect(GTK_OBJECT(window),"show",GTK_SIGNAL_FUNC(atualiza_lista),clist);
 	gtk_signal_connect(GTK_OBJECT(clist),"select_row",GTK_SIGNAL_FUNC(selection_made),NULL);
 
 	gtk_signal_connect(GTK_OBJECT(b_cancel),"clicked",GTK_SIGNAL_FUNC(sair),NULL);
